@@ -13,7 +13,9 @@ async function checkEmailAlreadyRegister(
     if (existingEmail.length > 0) {
       res.status(200).json({
         message: "Email already exists",
-        email: existingEmail[0].email,
+        data: {
+          email: existingEmail[0].email,
+        },
       });
     } else {
       next();

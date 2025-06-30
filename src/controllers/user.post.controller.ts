@@ -2,8 +2,13 @@ import type { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { client } from "../configs/db";
 
+type User = {
+  email: string;
+  password: string;
+};
+
 const postUser = async (req: Request, res: Response) => {
-  const { email, password }: { email: string; password: string } = req.body;
+  const { email, password }: User = req.body;
   const saltRounds: number = 10;
 
   try {
@@ -20,7 +25,7 @@ const postUser = async (req: Request, res: Response) => {
 };
 
 const loginUserByEmail = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const { email, password }: User = req.body;
   const query: string = "SELECT * FROM users WHERE email = $1";
 
   try {
@@ -43,7 +48,7 @@ const loginUserByEmail = async (req: Request, res: Response) => {
     if (isPasswordMatch) {
       res.status(200).json({
         message: "User found",
-        user: {
+        data: {
           id: response.rows[0].id,
           email: response.rows[0].email,
         },

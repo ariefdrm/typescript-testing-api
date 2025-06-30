@@ -41,10 +41,12 @@ Returns all users in the database.
 
 ```json
 [
-  {
-    "id": 1,
-    "email": "user@example.com"
-  }
+    "data" : [
+        {
+            "id": 1,
+            "email": "user@example.com"
+        }
+    ]
 ]
 ```
 
