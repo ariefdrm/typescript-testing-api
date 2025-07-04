@@ -2,12 +2,14 @@ import express from "express";
 import { client } from "./configs/db";
 import userRoutes from "./routes/userRoutes";
 import cors from "cors";
+import morgan from "morgan";
 
 const app = express();
 const port: number = 5000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(morgan("dev"));
 app.use(cors());
 client.connect();
 

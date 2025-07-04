@@ -1,11 +1,9 @@
 import dotenv from "dotenv";
 import path from "node:path";
-import { Client } from "pg";
+import { Pool } from "pg";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
-const client = new Client({
+export const client = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
-
-export { client };

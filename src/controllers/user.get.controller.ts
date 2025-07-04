@@ -1,28 +1,17 @@
 import { Request, Response } from "express";
 import { client } from "../configs/db";
 
-type User = {
-  id: number;
-  email: string;
-};
-
-const getAllUsers = async (_req: Request, res: Response) => {
-  const query: string = "SELECT * FROM users";
-  const values: Array<User> = [];
+export const getAllUsers = async (_req: Request, res: Response) => {
+  const query: string = "SELECT id, email FROM users";
 
   try {
     const result = await client.query(query);
 
-    result.rows.forEach((user: User) => {
-      values.push({ id: user.id, email: user.email });
-    });
-
     res.status(200).json({
-      data: values,
+      message: "SUCCESS",
+      data: result.rows,
     });
   } catch (error) {
     throw error;
   }
 };
-
-export { getAllUsers };
