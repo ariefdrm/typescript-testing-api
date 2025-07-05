@@ -13,12 +13,19 @@ const postUser = async (req: Request, res: Response) => {
 
   try {
     bcrypt.hash(password, saltRounds, async (_err, hash) => {
-      const query: string = `INSERT INTO users (email, password) VALUES ('${email}', '${hash}')`;
+      const query: string = `INSERT INTO users (email, password) VALUES ('$1', '$2')`;
 
-      await client.query(query);
+      await client.query(query, [email, hash]);
     });
 
-    res.status(201).json({ message: "User created successfully" });
+    // set Content-Type to application/json
+    res.set({
+      "Content-Type": "application/json",
+    });
+
+    res
+      .status(201)
+      .json({ message: "User created successfully", data: { email } });
   } catch (error) {
     throw error;
   }
@@ -29,6 +36,10 @@ const loginUserByEmail = async (req: Request, res: Response) => {
   const query: string = "SELECT * FROM users WHERE email = $1";
 
   try {
+    res.set({
+      "Content-Type": "application/json",
+    });
+
     if (!email || !password) {
       res.status(400).json({ message: "Email dan password harus diisi." });
     }
